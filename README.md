@@ -1,6 +1,6 @@
-# opengl-experiments
+# 3d-graphics
 
-Central repository for learning graphics programming.
+Central repository for 3D graphics programming and related topics.
 
 ## Resources
 
