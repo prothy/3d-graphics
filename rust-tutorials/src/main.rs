@@ -1,4 +1,4 @@
-use sdl2::{event::Event, pixels::Color, render::Canvas, sys::Window};
+use sdl2::{event::Event, pixels::Color};
 
 extern crate sdl2;
 
