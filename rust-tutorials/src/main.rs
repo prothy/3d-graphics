@@ -19,7 +19,7 @@ fn main() {
         .build()
         .unwrap();
 
-    window.gl_create_context().unwrap();
+    let _gl_context = window.gl_create_context().unwrap();
     gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
 
     unsafe {
