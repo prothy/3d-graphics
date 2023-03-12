@@ -7,3 +7,5 @@ Central repository for 3D graphics programming and related topics.
 http://learnwebgl.brown37.net/
 
 https://rust-tutorials.github.io/learn-opengl/
+
+https://learnopengl.com/
