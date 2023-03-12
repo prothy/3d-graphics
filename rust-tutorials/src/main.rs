@@ -1,15 +1,7 @@
-use sdl2::{event::Event, pixels::Color, video::GLProfile};
+use sdl2::{event::Event, video::GLProfile};
 
+extern crate gl;
 extern crate sdl2;
-
-fn find_sdl_gl_driver() -> Option<u32> {
-    for (index, item) in sdl2::render::drivers().enumerate() {
-        if item.name == "opengl" {
-            return Some(index as u32);
-        }
-    }
-    None
-}
 
 // from docs https://docs.rs/sdl2/latest/sdl2/#
 fn main() {
@@ -18,7 +10,7 @@ fn main() {
 
     let gl_attr = video_subsystem.gl_attr();
     gl_attr.set_context_profile(GLProfile::Core);
-    gl_attr.set_context_version(3, 3);
+    gl_attr.set_context_version(4, 5);
 
     let window = video_subsystem
         .window("demo", 800, 600)
@@ -27,26 +19,27 @@ fn main() {
         .build()
         .unwrap();
 
-    let mut canvas = window
-        .into_canvas()
-        .index(find_sdl_gl_driver().unwrap())
-        .build()
-        .unwrap();
+    window.gl_create_context().unwrap();
+    gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
 
-    canvas.set_draw_color(Color::RGB(0, 255, 255));
-    canvas.clear();
+    unsafe {
+        gl::ClearColor(0.2, 0.3, 0.3, 1.0);
+    }
 
     let mut event_pump = sdl_context.event_pump().unwrap();
 
-    'running: loop {
-        canvas.clear();
-        canvas.present();
-
+    'main: loop {
         for event in event_pump.poll_iter() {
             match event {
-                Event::Quit { .. } => break 'running,
+                Event::Quit { .. } => break 'main,
                 _ => {}
             }
         }
+
+        unsafe {
+            gl::Clear(gl::COLOR_BUFFER_BIT);
+        }
+
+        window.gl_swap_window();
     }
 }

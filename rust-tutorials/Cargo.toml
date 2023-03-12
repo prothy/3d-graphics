@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 bytemuck = "1.13.1"
-gl33 = "0.2.1"
+gl = "0.14.0"
 sdl2 = "0.35.2"
