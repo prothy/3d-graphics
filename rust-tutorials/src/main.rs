@@ -1,8 +1,5 @@
 use sdl2::{event::Event, video::GLProfile};
-use std::{
-    error::Error,
-    ffi::{CStr, CString},
-};
+use std::ffi::{CStr, CString};
 
 extern crate gl;
 extern crate sdl2;
@@ -48,6 +45,33 @@ fn main() {
     }
 }
 
+struct Shader {
+    id: gl::types::GLuint,
+}
+
+impl Shader {
+    fn from_source(source: &CStr, kind: gl::types::GLuint) -> Result<Shader, String> {
+        let id = shader_from_source(source, kind)?;
+        Ok(Shader { id })
+    }
+
+    fn from_vert_source(source: &CStr) -> Result<Shader, String> {
+        Shader::from_source(source, gl::VERTEX_SHADER)
+    }
+
+    fn from_frag_source(source: &CStr) -> Result<Shader, String> {
+        Shader::from_source(source, gl::FRAGMENT_SHADER)
+    }
+}
+
+impl Drop for Shader {
+    fn drop(&mut self) {
+        unsafe {
+            gl::DeleteShader(self.id);
+        }
+    }
+}
+
 // http://nercury.github.io/rust/opengl/tutorial/2018/02/10/opengl-in-rust-from-scratch-03-compiling-shaders.html
 fn shader_from_source(source: &CStr, kind: gl::types::GLuint) -> Result<gl::types::GLuint, String> {
     let id = unsafe { gl::CreateShader(kind) };
@@ -68,10 +92,7 @@ fn shader_from_source(source: &CStr, kind: gl::types::GLuint) -> Result<gl::type
             gl::GetShaderiv(id, gl::INFO_LOG_LENGTH, &mut len);
         }
 
-        let mut buffer: Vec<u8> = Vec::with_capacity(len as usize + 1);
-        buffer.extend([b' '].iter().cycle().take(len as usize));
-
-        let error: CString = unsafe { CString::from_vec_unchecked(buffer) };
+        let error = create_whitespace_cstring_with_len(len as usize);
 
         unsafe {
             gl::GetShaderInfoLog(
@@ -86,4 +107,11 @@ fn shader_from_source(source: &CStr, kind: gl::types::GLuint) -> Result<gl::type
     }
 
     Ok(id)
+}
+
+fn create_whitespace_cstring_with_len(len: usize) -> CString {
+    let mut buffer: Vec<u8> = Vec::with_capacity(len as usize + 1);
+    buffer.extend([b' '].iter().cycle().take(len as usize));
+
+    unsafe { CString::from_vec_unchecked(buffer) }
 }
