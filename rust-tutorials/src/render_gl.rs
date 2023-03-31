@@ -59,6 +59,14 @@ pub mod render_gl {
         }
     }
 
+    impl Drop for Program {
+        fn drop(&mut self) {
+            unsafe {
+                gl::DeleteProgram(self.id);
+            }
+        }
+    }
+
     pub struct Shader {
         id: gl::types::GLuint,
     }
