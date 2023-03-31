@@ -1,5 +1,5 @@
 use sdl2::{event::Event, video::GLProfile};
-use std::ffi::CString;
+use std::{ffi::CString, mem};
 
 extern crate gl;
 extern crate sdl2;
@@ -42,6 +42,37 @@ fn main() {
     let shader_program = render_gl::Program::from_shaders(&[vert_shader, frag_shader]).unwrap();
     shader_program.use_program();
 
+    // https://learnopengl.com/Getting-started/Hello-Triangle
+    let vertices: Vec<f32> = vec![-0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.0, 0.5, 0.0];
+
+    let mut vao: gl::types::GLuint = 0;
+    let mut vbo: gl::types::GLuint = 0;
+
+    unsafe {
+        gl::GenBuffers(1, &mut vbo);
+        gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
+        gl::BufferData(
+            gl::ARRAY_BUFFER,
+            (vertices.len() * mem::size_of::<f32>()).try_into().unwrap(),
+            vertices.as_ptr() as *const gl::types::GLvoid,
+            gl::STATIC_DRAW,
+        );
+
+        gl::GenVertexArrays(1, &mut vao);
+        gl::BindVertexArray(vao);
+        gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
+
+        gl::VertexAttribPointer(
+            0,
+            3,
+            gl::FLOAT,
+            gl::FALSE,
+            (3 * mem::size_of::<f32>()).try_into().unwrap(),
+            std::ptr::null(),
+        );
+        gl::EnableVertexAttribArray(0);
+    }
+
     'main: loop {
         for event in event_pump.poll_iter() {
             match event {
@@ -50,8 +81,11 @@ fn main() {
             }
         }
 
+        shader_program.use_program();
         unsafe {
             gl::Clear(gl::COLOR_BUFFER_BIT);
+            gl::BindVertexArray(vao);
+            gl::DrawArrays(gl::TRIANGLES, 0, 3)
         }
 
         window.gl_swap_window();
