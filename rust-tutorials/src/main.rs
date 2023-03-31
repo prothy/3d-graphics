@@ -1,4 +1,5 @@
 use sdl2::{event::Event, video::GLProfile};
+use std::ffi::CString;
 
 extern crate gl;
 extern crate sdl2;
@@ -29,6 +30,17 @@ fn main() {
     }
 
     let mut event_pump = sdl_context.event_pump().unwrap();
+
+    let vert_shader =
+        render_gl::Shader::from_vert_source(&CString::new(include_str!("triangle.vert")).unwrap())
+            .unwrap();
+
+    let frag_shader =
+        render_gl::Shader::from_frag_source(&CString::new(include_str!("triangle.frag")).unwrap())
+            .unwrap();
+
+    let shader_program = render_gl::Program::from_shaders(&[vert_shader, frag_shader]).unwrap();
+    shader_program.use_program();
 
     'main: loop {
         for event in event_pump.poll_iter() {
