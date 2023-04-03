@@ -40,7 +40,7 @@ fn main() {
             .unwrap();
 
     let shader_program = render_gl::Program::from_shaders(&[vert_shader, frag_shader]).unwrap();
-    shader_program.use_program();
+    shader_program.set_used();
 
     // https://learnopengl.com/Getting-started/Hello-Triangle
     let vertices: Vec<f32> = vec![-0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.0, 0.5, 0.0];
@@ -81,7 +81,7 @@ fn main() {
             }
         }
 
-        shader_program.use_program();
+        shader_program.set_used();
         unsafe {
             gl::Clear(gl::COLOR_BUFFER_BIT);
             gl::BindVertexArray(vao);
