@@ -1,5 +1,5 @@
 use sdl2::{event::Event, video::GLProfile};
-use std::{ffi::CString, mem};
+use std::{ffi::CString, fs::File, io::Read, mem};
 
 extern crate gl;
 extern crate sdl2;
@@ -31,8 +31,8 @@ fn main() {
 
     // SHADER PROGRAM
     // ==============
-    let vertex_source = CString::new("shader.vert").unwrap();
-    let fragment_source = CString::new("shader.frag").unwrap();
+    let vertex_source = read_source_from_file("shader.vert");
+    let fragment_source = read_source_from_file("shader.frag");
 
     unsafe {
         // vertex shader
@@ -54,6 +54,7 @@ fn main() {
                 info_log.as_ptr() as *mut i8,
             );
             println!("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{:?}", info_log);
+            println!("Shader: {:?}", vertex_source);
         }
 
         // fragment shader
@@ -84,6 +85,7 @@ fn main() {
         let shader_program = gl::CreateProgram();
         gl::AttachShader(shader_program, vertex_shader);
         gl::AttachShader(shader_program, fragment_shader);
+        gl::LinkProgram(shader_program);
 
         gl::GetProgramiv(shader_program, gl::LINK_STATUS, &mut success);
 
@@ -100,6 +102,7 @@ fn main() {
         gl::DeleteShader(vertex_shader);
         gl::DeleteShader(fragment_shader);
 
+        // set up vertices
         let vertices: Vec<f32> = vec![
             0.5, 0.5, 0.0, 0.5, -0.5, 0.0, -0.5, -0.5, 0.0, -0.5, 0.5, 0.0,
         ];
@@ -137,8 +140,6 @@ fn main() {
             gl::STATIC_DRAW,
         );
 
-        let _error = gl::GetError();
-
         gl::VertexAttribPointer(
             0,
             3,
@@ -175,4 +176,13 @@ fn main() {
 
         window.gl_swap_window();
     }
+}
+
+fn read_source_from_file(file_name: &str) -> CString {
+    let mut source_file = File::open(format!("src/{file_name}")).unwrap();
+    let mut contents = String::new();
+
+    source_file.read_to_string(&mut contents).unwrap();
+
+    CString::new(contents).unwrap()
 }
