@@ -1,8 +1,5 @@
 use sdl2::{event::Event, video::GLProfile};
-use std::{
-    ffi::{c_char, CString},
-    mem,
-};
+use std::{ffi::CString, mem};
 
 extern crate gl;
 extern crate sdl2;
@@ -44,12 +41,18 @@ fn main() {
         gl::CompileShader(vertex_shader);
 
         let mut success = 0;
-        let info_log = [' ' as c_char; 512].as_mut_ptr();
+        let string = String::from_iter(vec![' '; 512]);
+        let info_log = CString::new(string).unwrap();
 
         gl::GetShaderiv(vertex_shader, gl::COMPILE_STATUS, &mut success);
 
         if success == 0 {
-            gl::GetShaderInfoLog(vertex_shader, 512, std::ptr::null_mut(), info_log);
+            gl::GetShaderInfoLog(
+                vertex_shader,
+                512,
+                std::ptr::null_mut(),
+                info_log.as_ptr() as *mut i8,
+            );
             println!("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{:?}", info_log);
         }
 
@@ -66,7 +69,12 @@ fn main() {
         gl::GetShaderiv(fragment_shader, gl::COMPILE_STATUS, &mut success);
 
         if success == 0 {
-            gl::GetShaderInfoLog(fragment_shader, 512, std::ptr::null_mut(), info_log);
+            gl::GetShaderInfoLog(
+                fragment_shader,
+                512,
+                std::ptr::null_mut(),
+                info_log.as_ptr() as *mut i8,
+            );
             println!(
                 "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{:?}",
                 info_log
@@ -80,7 +88,12 @@ fn main() {
         gl::GetProgramiv(shader_program, gl::LINK_STATUS, &mut success);
 
         if success == 0 {
-            gl::GetProgramInfoLog(shader_program, 512, std::ptr::null_mut(), info_log);
+            gl::GetProgramInfoLog(
+                shader_program,
+                512,
+                std::ptr::null_mut(),
+                info_log.as_ptr() as *mut i8,
+            );
             println!("ERROR::PROGRAM::LINKING_FAILED\n{:?}", info_log);
         }
 
