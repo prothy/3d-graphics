@@ -126,7 +126,7 @@ fn create_shader_program(event_pump: &mut EventPump, window: Window) {
             [-0.5, 0.5, 0.0],
         ];
 
-        let indices: Vec<GLuint> = vec![0, 1, 3, 1, 2, 3];
+        let indices: Vec<Vertex<GLuint>> = vec![[0, 1, 3], [1, 2, 3]];
 
         let mut vao: GLuint = 0;
         let mut vbo: GLuint = 0;
@@ -145,7 +145,7 @@ fn create_shader_program(event_pump: &mut EventPump, window: Window) {
         gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
         gl::BufferData(
             gl::ARRAY_BUFFER,
-            size_of_val(&vertices) as GLsizeiptr,
+            2 * size_of_val(&vertices) as GLsizeiptr,
             vertices.as_ptr() as *const GLvoid,
             gl::STATIC_DRAW,
         );
@@ -154,7 +154,7 @@ fn create_shader_program(event_pump: &mut EventPump, window: Window) {
         gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ebo);
         gl::BufferData(
             gl::ELEMENT_ARRAY_BUFFER,
-            size_of_val(&indices) as GLsizeiptr,
+            2 * size_of_val(&indices) as GLsizeiptr,
             indices.as_ptr() as *const GLvoid,
             gl::STATIC_DRAW,
         );
