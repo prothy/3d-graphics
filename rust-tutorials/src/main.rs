@@ -119,45 +119,52 @@ fn create_shader_program(event_pump: &mut EventPump, window: Window) {
 
         // set up vertices
         type Vertex<T = GLfloat> = [T; 3];
+        // let vertices: Vec<Vertex> = vec![
+        //     [0.5, 0.5, 0.0],
+        //     [0.5, -0.5, 0.0],
+        //     [-0.5, -0.5, 0.0],
+        //     [-0.5, 0.5, 0.0],
+        // ];
         let vertices: Vec<Vertex> = vec![
-            [0.5, 0.5, 0.0],
-            [0.5, -0.5, 0.0],
-            [-0.5, -0.5, 0.0],
-            [-0.5, 0.5, 0.0],
+            [-0.5, 0.0, 0.0],
+            [-0.25, 0.5, 0.0],
+            [0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0],
+            [0.25, 0.5, 0.0],
+            [0.5, 0.0, 0.0],
         ];
 
         let indices: Vec<Vertex<GLuint>> = vec![[0, 1, 3], [1, 2, 3]];
 
         let mut vao: GLuint = 0;
         let mut vbo: GLuint = 0;
-        let mut ebo: GLuint = 0;
+        // let mut ebo: GLuint = 0;
 
         // https://learnopengl.com/Getting-started/Hello-Triangle
-        // let vertices: Vec<f32> = vec![-0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.0, 0.5, 0.0];
         gl::GenVertexArrays(1, &mut vao);
         // triangle
         gl::GenBuffers(1, &mut vbo);
         // rectangle
-        gl::GenBuffers(1, &mut ebo);
+        // gl::GenBuffers(1, &mut ebo);
         gl::BindVertexArray(vao);
 
         // VERTEX BUFFER OBJECT -----------
         gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
         gl::BufferData(
             gl::ARRAY_BUFFER,
-            2 * size_of_val(&vertices) as GLsizeiptr,
+            3 * size_of_val(&vertices) as GLsizeiptr,
             vertices.as_ptr() as *const GLvoid,
             gl::STATIC_DRAW,
         );
 
         // ELEMENT BUFFER OBJECT -----------
-        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ebo);
-        gl::BufferData(
-            gl::ELEMENT_ARRAY_BUFFER,
-            2 * size_of_val(&indices) as GLsizeiptr,
-            indices.as_ptr() as *const GLvoid,
-            gl::STATIC_DRAW,
-        );
+        // gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ebo);
+        // gl::BufferData(
+        //     gl::ELEMENT_ARRAY_BUFFER,
+        //     2 * size_of_val(&indices) as GLsizeiptr,
+        //     indices.as_ptr() as *const GLvoid,
+        //     gl::STATIC_DRAW,
+        // );
 
         // VERTEX ATTRIB ARRAY ----------
         gl::VertexAttribPointer(
@@ -186,8 +193,8 @@ fn create_shader_program(event_pump: &mut EventPump, window: Window) {
 
             gl::UseProgram(shader_program);
             gl::BindVertexArray(vao);
-            // gl::DrawArrays(gl::TRIANGLES, 0, 6);
-            gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, 0 as *const GLvoid);
+            gl::DrawArrays(gl::TRIANGLES, 0, 6);
+            // gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, 0 as *const GLvoid);
 
             window.gl_swap_window();
         }
