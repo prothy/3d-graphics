@@ -1,6 +1,20 @@
+function logGLCall(functionName: string, args: unknown[]) {
+    console.log(
+        'gl.' +
+            functionName +
+            '(' +
+            window.WebGLDebugUtils.glFunctionArgsToString(functionName, args) +
+            ')'
+    );
+}
+
 export function initializeWebGlContext() {
     const canvas = document.querySelector('canvas');
-    const gl = canvas?.getContext('webgl2');
+    const gl = window.WebGLDebugUtils.makeDebugContext(
+        canvas?.getContext('webgl2'),
+        undefined,
+        logGLCall
+    );
 
     if (!gl) {
         return;

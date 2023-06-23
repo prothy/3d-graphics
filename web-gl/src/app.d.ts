@@ -7,6 +7,17 @@ declare global {
 		// interface PageData {}
 		// interface Platform {}
 	}
+
+	interface Window {
+        WebGLDebugUtils: {
+            makeDebugContext: (
+                ctx?: WebGL2RenderingContext | null,
+                arg1?: unknown,
+                arg2?: (...args) => void
+            ) => WebGL2RenderingContext;
+            glFunctionArgsToString: (arg0: string, ...args) => unknown;
+        };
+    }
 }
 
 export {};
