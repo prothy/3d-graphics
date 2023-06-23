@@ -1,4 +1,10 @@
 <script lang="ts">
+    /**
+     * MDN Square demo
+     * https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Adding_2D_content_to_a_WebGL_context
+     * 
+    */
+
     import { onMount } from 'svelte';
     import { initializeWebGlContext, loadShader } from '../../utils';
     import { mat4 } from 'gl-matrix';

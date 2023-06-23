@@ -6,7 +6,8 @@
 	<h1>3d graphics</h1>
 	<nav>
 		<a href="/">Home</a>
-        <a href="/square">Square</a>
+        <a href="/square">MDN Square Demo</a>
+        <a href="/square-simple">Square</a>
 	</nav>
 </header> 
 
