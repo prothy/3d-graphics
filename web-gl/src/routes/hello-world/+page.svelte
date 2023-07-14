@@ -106,12 +106,21 @@
         gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
 
         // regarding size = 2:
-        // in shader we defined a_position using vec4, looks like this 
+        // in shader we defined a_position using vec4, looks like this
         // a_position = {x: 0, y: 0, z: 0, w:0 }
         // settings size = 2 means we only set x and y. z and w will default to 0 and 1 respectively.
 
+
+        const canvas = document.querySelector('canvas');
+
+        // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+        if (canvas) {
+            canvas.width = canvas?.clientWidth;
+            canvas.height = canvas?.clientHeight;
+        }
+
         // gl needs to convert from clip space values from gl_Position back to pixels
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
