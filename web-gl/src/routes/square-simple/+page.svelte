@@ -12,7 +12,7 @@
         }
 
         ////////////////////////////////////////////////////////////////////////////
-        //                                                                        //
+        //                              DOESN'T WORK                              //
         //    FOLLOWING https://learnopengl.com/Getting-started/Hello-Triangle    //
         //                                                                        //
         ////////////////////////////////////////////////////////////////////////////
@@ -34,7 +34,9 @@
         gl.attachShader(shaderProgram, vertexShader);
         gl.attachShader(shaderProgram, fragmentShader);
         gl.linkProgram(shaderProgram);
+
         gl.useProgram(shaderProgram);
+        console.log(JSON.stringify(gl.getProgramInfoLog(shaderProgram)));
 
         // shaders no longer needed after linking to program
         gl.deleteShader(vertexShader);
@@ -59,8 +61,9 @@
 
         // VBO (vertex buffer object): Store vertices in GPU
         const vbo = gl.createBuffer();
+
         gl.bindBuffer(gl.ARRAY_BUFFER, vbo); // vbo has GL_ARRAY_BUFFER type
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW); // copy vertex data into buffer's memory
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW); // copy vertex data into buffer's memory
         // last parameter determines how GPU should manage data
         // STREAM_DRAW: data is set once and used seldomly by GPU
         // STATIC_DRAW: data is set once and used often by GPU
@@ -72,9 +75,7 @@
 
         gl.bindVertexArray(vao);
 
-        requestAnimationFrame(() => {
-            gl.drawArrays(gl.TRIANGLES, 0, 3);
-        });
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
     });
 </script>
 

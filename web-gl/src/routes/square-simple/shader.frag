@@ -1,8 +1,11 @@
 #version 300 es
 
-precision mediump float;
-out vec4 FragColor;
+#ifdef GL_ES
+precision highp float;
+#endif
+
+out vec4 uGlobalColor;
 
 void main() {
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+  uGlobalColor = vec4(1, 0, 0, 1);
 }

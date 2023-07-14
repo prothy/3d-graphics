@@ -11,3 +11,5 @@ https://rust-tutorials.github.io/learn-opengl/
 https://learnopengl.com/
 
 https://antongerdelan.net/opengl/hellotriangle.html
+
+https://webgl2fundamentals.org/webgl/lessons/webgl1-to-webgl2.html

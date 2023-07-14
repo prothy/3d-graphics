@@ -1,7 +1,14 @@
 #version 300 es
 
-layout(location = 0) in vec3 aPos;
+in vec2 aVertexPosition;
+
+uniform vec2 uScalingFactor;
+uniform vec2 uRotationVector;
 
 void main() {
-    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);
+    vec2 rotatedPosition = vec2(aVertexPosition.x * uRotationVector.y +
+        aVertexPosition.y * uRotationVector.x, aVertexPosition.y * uRotationVector.y -
+        aVertexPosition.x * uRotationVector.x);
+
+    gl_Position = vec4(rotatedPosition * uScalingFactor, 0.0f, 1.0f);
 }
