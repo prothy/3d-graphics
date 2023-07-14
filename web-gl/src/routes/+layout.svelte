@@ -9,6 +9,7 @@
         <a href="/square">MDN Square Demo</a>
         <a href="/square-simple">Square</a>
         <a href="/hello-world">Hello world</a>
+        <a href="/hello-world-2">Hello world pt. 2</a>
 	</nav>
 </header> 
 
