@@ -20,7 +20,7 @@ export function initializeWebGlContext() {
         return;
     }
 
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(0, 0, 0.3, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     return gl;
