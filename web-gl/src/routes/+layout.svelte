@@ -8,6 +8,7 @@
 		<a href="/">Home</a>
         <a href="/square">MDN Square Demo</a>
         <a href="/square-simple">Square</a>
+        <a href="/hello-world">Hello world</a>
 	</nav>
 </header> 
 
