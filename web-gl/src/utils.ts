@@ -17,7 +17,7 @@ export function initializeWebGlContext() {
     );
 
     if (!gl) {
-        return;
+        throw new Error('Failed to initialize WebGL context.');
     }
 
     gl.clearColor(0, 0, 0, 0);

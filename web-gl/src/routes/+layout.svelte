@@ -10,6 +10,7 @@
         <a href="/square-simple">Square</a>
         <a href="/hello-world">Hello world</a>
         <a href="/hello-world-2">Hello world pt. 2</a>
+        <a href="/moveable-square">Moveable square</a>
 	</nav>
 </header> 
 
