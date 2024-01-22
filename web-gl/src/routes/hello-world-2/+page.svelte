@@ -116,13 +116,13 @@
         // gl needs to convert from clip space values from gl_Position back to pixels
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-        gl.clearColor(0.2, 0.2, 0.2, 1);
+        gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         gl.useProgram(program);
 
         // uniform values go after useProgram
-        gl.uniform4f(colorLocation, 0.5, 0.2, 0.8, 1)
+        gl.uniform4f(colorLocation, 0.5, 0.2, 0.8, 1);
         gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
 
         // tell program which buffers to use and how to pull data from them
