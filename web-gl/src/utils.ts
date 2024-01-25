@@ -8,13 +8,14 @@ function logGLCall(functionName: string, args: unknown[]) {
     );
 }
 
-export function initializeWebGlContext() {
+export function initializeWebGlContext(debug?: boolean) {
     const canvas = document.querySelector('canvas');
-    const gl = window.WebGLDebugUtils.makeDebugContext(
-        canvas?.getContext('webgl2'),
+    const glContext = canvas?.getContext('webgl2')
+    const gl = debug ? window.WebGLDebugUtils.makeDebugContext(
+        glContext,
         undefined,
         logGLCall
-    );
+    ) : glContext;
 
     if (!gl) {
         throw new Error('Failed to initialize WebGL context.');
