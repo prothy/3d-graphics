@@ -22,8 +22,6 @@
         return [vertexShader, fragmentShader];
     }
 
-    
-
     onMount(() => {
         const gl = initializeWebGlContext();
 
@@ -45,7 +43,7 @@
 
         const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
         const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
-        const translationLocation = gl.getUniformLocation(program, 'u_translation')
+        const translationLocation = gl.getUniformLocation(program, 'u_translation');
 
         const positionBuffer = gl.createBuffer();
 
@@ -53,10 +51,10 @@
 
         // prettier-ignore
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-            150, 200, 800, 
-            200, 150, 700, 
-            150, 700, 800, 
-            200, 800, 700
+            150, 200, 600, 
+            200, 150, 500, 
+            150, 500, 600, 
+            200, 600, 500
         ]), gl.STATIC_DRAW);
 
         const vao = gl.createVertexArray();
@@ -81,11 +79,12 @@
 
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-        let translationMultiplier = 0;
+        let translationMultiplierX = 0;
+        let translationMultiplierY = 0;
 
-        // while(true) {
-            {
-            translationMultiplier += 1;
+        const draw: FrameRequestCallback = (time) => {
+            translationMultiplierX += Math.sin(time / 1000) * 5;
+            translationMultiplierY += Math.cos(time / 1000) * 5;
 
             gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT);
@@ -93,12 +92,16 @@
             gl.useProgram(program);
 
             gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-            gl.uniform2f(translationLocation, -100, 0)
+            gl.uniform2f(translationLocation, translationMultiplierX, translationMultiplierY);
 
             gl.bindVertexArray(vao);
 
-            gl.drawArrays(gl.TRIANGLES, 0, 6);}
-        // }
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+            requestAnimationFrame(draw)
+        }
+
+        requestAnimationFrame(draw);
     });
 </script>
 
