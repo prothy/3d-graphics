@@ -12,6 +12,7 @@
         <a href="/hello-world-2">Hello world pt. 2</a>
         <a href="/vertex-shader">Vertex shader</a>
         <a href="/translate">Translation</a>
+        <a href="/rotate">Rotation</a>
 	</nav>
 </header> 
 
