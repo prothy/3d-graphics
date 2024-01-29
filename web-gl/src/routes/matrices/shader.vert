@@ -10,7 +10,7 @@ out vec4 v_color;
 
 void main() {
   vec2 rotation = vec2(float(cos(u_rotation)), float(sin(u_rotation)));
-  vec2 position = a_position * rotation  + u_translation;
+  vec2 position = a_position  + u_translation;
   vec2 zeroToOne = position / u_resolution;
   vec2 zeroToTwo = zeroToOne * 2.0f;
   vec2 clipSpace = zeroToTwo - 1.0f;

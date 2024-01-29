@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { createProgram, createShader, initializeWebGlContext } from '../../utils';
+    import { createProgram, createShader, initializeWebGlContext, m3 } from '../../utils';
 
     import vsSource from './shader.vert?raw';
     import fsSource from './shader.frag?raw';
@@ -43,7 +43,7 @@
 
         const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
         const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
-        const translationLocation = gl.getUniformLocation(program, 'u_translation');
+        const matrixLocation = gl.getUniformLocation(program, 'u_matrix');
 
         const positionBuffer = gl.createBuffer();
 
@@ -90,20 +90,24 @@
             gl.useProgram(program);
 
             gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-            gl.uniform2f(translationLocation, -100, 0);
+
+            const translationMatrix = m3.translate(1, 2);
+            const rotationMatrix = m3.rotate(1);
+            const scaleMatrix = m3.scale(1, 2);
+
+            const transformationMatrix = m3.multiply(m3.multiply(translationMatrix, rotationMatrix), scaleMatrix)
+
+            gl.uniformMatrix3fv(matrixLocation, false, transformationMatrix)
 
             gl.bindVertexArray(vao);
 
             gl.drawArrays(gl.TRIANGLES, 0, 6);
 
             // requestAnimationFrame(draw)
-        }
+        };
 
-        requestAnimationFrame(draw)
-        // draw()
+        requestAnimationFrame(draw);
     });
 </script>
-
-<h1>Hello World</h1>
 
 <canvas />
